@@ -44,6 +44,6 @@ public class Letter {
 	public void guess() {
 		guessed = true;
 	}
-	
+		
 
 }
