@@ -16,7 +16,8 @@ import javafx.stage.Stage;
 
 public class GUIDriver extends Application {
 
-	int wrongs = 0;
+	int wrongs = 6;
+	boolean gameDone = false;
 	@Override
 	public void start(Stage stage) throws Exception {
 		
@@ -50,7 +51,7 @@ public class GUIDriver extends Application {
 		
 		VBox root = new VBox(10);
 		root.setAlignment(Pos.CENTER);
-		Label triesLeft = new Label("You have "+(6-wrongs)+" tries left.");
+		Label triesLeft = new Label("You have "+(wrongs)+" tries left.");
 		
 		Button[] letterBtns = new Button[26];
 		String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
@@ -69,7 +70,7 @@ public class GUIDriver extends Application {
 		    } else {
 		    	unrevealedWord[i] = new Label("_");
 		    }
-		    unrevealedWord[i].setStyle("-fx-font-size: 20; -fx-padding: 5;");
+		    unrevealedWord[i].setStyle("-fx-font-size: 15; -fx-padding: 5;");
 		}
 		
 		wordBox.getChildren().addAll(unrevealedWord);
@@ -101,7 +102,7 @@ public class GUIDriver extends Application {
 		for (int i= 0; i < letterBtns.length; i++) {
 			final int index = i;
 			letterBtns[i].setOnAction(e-> {
-				if (!letters[index].isGuessed()) {
+				if (!letters[index].isGuessed() && wrongs!=0) {
 					letters[index].guess();
 					letterBtns[index].setDisable(true);
 					
@@ -112,25 +113,55 @@ public class GUIDriver extends Application {
 							String letter =randomSentence.substring(j,j+1);
 							if (letter.equals(letterBtns[index].getText())) {
 								unrevealedWord[j].setText(letter);
+								
 							}
 						}
 					}
 					else {
 						letterBtns[index].setStyle("-fx-background-color: #FF0000");
-						wrongs+=1;
-						triesLeft.setText("You have "+(6-wrongs)+" tries left.");
+						wrongs-=1;
+						triesLeft.setText("You have "+(wrongs)+" tries left.");
 					}
+					String currentGuess = "";
+					for (Label l : unrevealedWord) {
+						currentGuess += l.getText();
+					}
+					if (currentGuess.equals(randomSentence)) {
+						endGame(randomSentence, true, stage);
+					}
+				}
+				else {
+					endGame(randomSentence,false, stage);
 				}
 					
 			});
 		}
 		
 		root.getChildren().addAll(triesLeft, wordBox, row1, row2);
-		Scene scene1 = new Scene (root, 500, 500);
+		Scene scene1 = new Scene (root, 1000, 500);
 		stage.setScene(scene1);
 		
 		
 		stage.show();
+	}
+	
+	
+	public void endGame(String randomSentence, boolean win, Stage stage) {
+		VBox over = new VBox (10);
+		Label status = new Label("");
+		Label revealedSentence = new Label(randomSentence);
+		if (win == true) {
+			status.setText("You survived!");
+		}
+		else {
+			status.setText("You got hanged :(");
+		}
+		
+		over.getChildren().addAll(status, revealedSentence);
+		Scene gameOver = new Scene(over,500,500);
+		stage.setScene(gameOver);
+		stage.show();
+		
 	}
 
 	public static void main(String[] args) {
