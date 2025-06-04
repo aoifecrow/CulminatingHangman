@@ -59,10 +59,13 @@ public class GUIDriver extends Application {
 		
 		Label[] unrevealedWord = new Label[randomSentence.length()];
 		
-		HBox wordBox = new HBox(8);
+		HBox wordBox1 = new HBox(8);
+		HBox wordBox2 = new HBox(8);
 		
-		wordBox.setAlignment(Pos.CENTER);
+		wordBox1.setAlignment(Pos.CENTER);
+		wordBox2.setAlignment(Pos.CENTER);
 		
+		int row = 1;
 		for (int i = 0; i < unrevealedWord.length; i++) {
 		    char letter = randomSentence.charAt(i);
 		    if (letter == ' ') {
@@ -71,9 +74,14 @@ public class GUIDriver extends Application {
 		    	unrevealedWord[i] = new Label("_");
 		    }
 		    unrevealedWord[i].setStyle("-fx-font-size: 15; -fx-padding: 5;");
+		    if (row==1) {
+		    	wordBox1.getChildren().add(unrevealedWord[i]);
+		    }
+		    else {
+		    	wordBox2.getChildren().add(unrevealedWord[i]);
+		    }
 		}
 		
-		wordBox.getChildren().addAll(unrevealedWord);
 	
 		Letter[] letters = new Letter[26];
 		
@@ -137,7 +145,7 @@ public class GUIDriver extends Application {
 			});
 		}
 		
-		root.getChildren().addAll(triesLeft, wordBox, row1, row2);
+		root.getChildren().addAll(triesLeft, wordBox1, wordBox2, row1, row2);
 		Scene scene1 = new Scene (root, 1000, 500);
 		stage.setScene(scene1);
 		
