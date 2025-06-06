@@ -6,25 +6,76 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.io.FileInputStream;
 
 public class GUIDriver extends Application {
 
-	int wrongs = 6;
+	int guesses = 6;
 	boolean gameDone = false;
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
+		VBox menu = new VBox(20);
+		menu.setAlignment(Pos.CENTER);
+		Label title = new Label("Hangman");
+		Label options = new Label("Pick your category:");
+		Button genZBtn = new Button("Gen Z Phrases");
+		Button movieBtn = new Button("Movie Quotes");
+		Button songBtn = new Button("Song Lyrics");
+		title.setStyle("-fx-font-size: 34; -fx-padding: 5;");
+		options.setStyle("-fx-font-size: 20; -fx-padding: 5;");
+		genZBtn.setStyle("-fx-font-size: 15; -fx-padding: 5;");
+		movieBtn.setStyle("-fx-font-size: 15; -fx-padding: 5;");
+		songBtn.setStyle("-fx-font-size: 15; -fx-padding: 5;");
+		
+		genZBtn.setOnAction(e -> {
+			try {
+				startGame(stage, "genZ_phrase.txt");
+			} catch (Exception e1) {
+				System.out.println("There must be a file issue");
+				System.out.println(e1.getMessage());
+			}
+		});
+
+		movieBtn.setOnAction(e -> {
+			try {
+				startGame(stage, "movie_tv_quotes_5_6_words.txt");
+			} catch (Exception e1) {
+				System.out.println("There must be a file issue");
+				System.out.println(e1.getMessage());
+			}
+		});
+
+		songBtn.setOnAction(e -> {
+			try {
+				startGame(stage, "song_lyrics.txt");
+			} catch (Exception e1) {
+				System.out.println("There must be a file issue");
+				System.out.println(e1.getMessage());
+			}
+		});
+
+		menu.getChildren().addAll(title, options, genZBtn, movieBtn, songBtn);
+		Scene startScene = new Scene(menu, 800, 400);
+		stage.setScene(startScene);
+		stage.show();
+	}
+	public void startGame(Stage stage, String filename) throws Exception {
 		
 		Random rand = new Random();
 		ArrayList<String> sentences = new ArrayList<>() ;
 		try { 
-			File f = new File("hangman_sentences_500_cleaned.txt");
+			File f = new File(filename);
 			Scanner in = new Scanner(f);
 			String content = "";
 			while (in.hasNext()) {
@@ -49,9 +100,9 @@ public class GUIDriver extends Application {
 		String randomSentence = sentences.get(rand.nextInt(sentences.size())).toLowerCase();
 		System.out.println(randomSentence);
 		
-		VBox root = new VBox(10);
-		root.setAlignment(Pos.CENTER);
-		Label triesLeft = new Label("You have "+(wrongs)+" tries left.");
+		VBox gameContent = new VBox(10);
+		gameContent.setAlignment(Pos.CENTER_LEFT);
+		Label triesLeft = new Label("You have "+(guesses)+" tries left.");
 		
 		Button[] letterBtns = new Button[26];
 		String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
@@ -62,23 +113,50 @@ public class GUIDriver extends Application {
 		HBox wordBox1 = new HBox(8);
 		HBox wordBox2 = new HBox(8);
 		
-		wordBox1.setAlignment(Pos.CENTER);
-		wordBox2.setAlignment(Pos.CENTER);
+		//TEST IMAGE
+		Image leg2 = new Image(new FileInputStream("src/images/leg2.png"));
+		Image leg1 = new Image(new FileInputStream("src/images/leg1.png"));
+		Image arm2 = new Image(new FileInputStream("src/images/arm2.png"));
+		Image arm1 = new Image(new FileInputStream("src/images/arm1.png"));
+		Image body = new Image(new FileInputStream("src/images/body.png"));
+		Image head = new Image(new FileInputStream("src/images/head.png"));
+		Image nothing = new Image(new FileInputStream("src/images/nothing.png"));
+		
+		Image[] hangmanImages = {nothing,head,body,arm1,arm2,leg1,leg2};
+		
+		ImageView hangmanView = new ImageView(nothing);
+		hangmanView.setFitWidth(280);
+		hangmanView.setPreserveRatio(true);
+		hangmanView.setX(575);
+		hangmanView.setY(0);
+		
+		wordBox1.setAlignment(Pos.CENTER_LEFT);
+		wordBox2.setAlignment(Pos.CENTER_LEFT);
+		
+		// Add left padding to shift it off the edge
+		wordBox1.setPadding(new Insets(0, 0, 0, 15));
+		wordBox2.setPadding(new Insets(0, 0, 0, 15));
 		
 		int row = 1;
 		for (int i = 0; i < unrevealedWord.length; i++) {
 		    char letter = randomSentence.charAt(i);
+		    
+		    if (row !=2 && i>15 && letter == ' ') {
+		    	row = 2;
+		    }
+		    
 		    if (letter == ' ') {
 		        unrevealedWord[i] = new Label(" ");
 		    } else {
 		    	unrevealedWord[i] = new Label("_");
 		    }
 		    unrevealedWord[i].setStyle("-fx-font-size: 15; -fx-padding: 5;");
-		    if (row==1) {
-		    	wordBox1.getChildren().add(unrevealedWord[i]);
+		    
+		    if (row==2) {
+		    	wordBox2.getChildren().add(unrevealedWord[i]);
 		    }
 		    else {
-		    	wordBox2.getChildren().add(unrevealedWord[i]);
+		    	wordBox1.getChildren().add(unrevealedWord[i]);
 		    }
 		}
 		
@@ -93,8 +171,12 @@ public class GUIDriver extends Application {
 		HBox row1 = new HBox(4);
 		HBox row2 = new HBox(4);
 		
-		row1.setAlignment(Pos.CENTER);
-		row2.setAlignment(Pos.CENTER);
+		row1.setAlignment(Pos.CENTER_LEFT);
+		row2.setAlignment(Pos.CENTER_LEFT);
+		
+		// Add left padding to shift it off the edge
+		row1.setPadding(new Insets(0, 0, 0, 50));
+		row2.setPadding(new Insets(0, 0, 0, 50));
 
 		for (int i =0; i < letterBtns.length;i++) {
 			Button letter = new Button(alphabet[i]);
@@ -105,12 +187,13 @@ public class GUIDriver extends Application {
 			else {
 				row2.getChildren().add(letter);
 			}
+			letter.setStyle("-fx-font-size: 15;");
 		}
 		
 		for (int i= 0; i < letterBtns.length; i++) {
 			final int index = i;
 			letterBtns[i].setOnAction(e-> {
-				if (!letters[index].isGuessed() && wrongs!=0) {
+				if (!letters[index].isGuessed() && guesses!=1) {
 					letters[index].guess();
 					letterBtns[index].setDisable(true);
 					
@@ -127,46 +210,71 @@ public class GUIDriver extends Application {
 					}
 					else {
 						letterBtns[index].setStyle("-fx-background-color: #FF0000");
-						wrongs-=1;
-						triesLeft.setText("You have "+(wrongs)+" tries left.");
+						guesses-=1;
+						hangmanView.setImage(hangmanImages[6-guesses]);
+						triesLeft.setText("You have "+(guesses)+" tries left.");
 					}
 					String currentGuess = "";
 					for (Label l : unrevealedWord) {
 						currentGuess += l.getText();
 					}
 					if (currentGuess.equals(randomSentence)) {
-						endGame(randomSentence, true, stage);
+						try {
+							endGame(randomSentence, true, stage);
+						} catch (FileNotFoundException e1) {
+							System.out.println("There must be a file issue");
+							System.out.println(e1.getMessage());
+						}
 					}
 				}
 				else {
-					endGame(randomSentence,false, stage);
+					try {
+						endGame(randomSentence,false, stage);
+					} catch (FileNotFoundException e1) {
+						System.out.println("There must be a file issue");
+						System.out.println(e1.getMessage());
+					}
 				}
 					
 			});
 		}
-		
-		root.getChildren().addAll(triesLeft, wordBox1, wordBox2, row1, row2);
-		Scene scene1 = new Scene (root, 1000, 500);
+		Pane layout = new Pane();
+		gameContent.getChildren().addAll(triesLeft, wordBox1, wordBox2, row1, row2);
+		gameContent.setLayoutY(100);
+		layout.getChildren().addAll(gameContent,hangmanView);
+		Scene scene1 = new Scene (layout, 800, 400);
 		stage.setScene(scene1);
-		
-		
+	
 		stage.show();
 	}
 	
 	
-	public void endGame(String randomSentence, boolean win, Stage stage) {
-		VBox over = new VBox (10);
+	public void endGame(String randomSentence, boolean win, Stage stage) throws FileNotFoundException {
+		Image happy = new Image(new FileInputStream("src/images/happy.png"));
+		Image sad = new Image(new FileInputStream("src/images/sad.png"));
+		VBox overContent = new VBox (10);
+		Pane over = new Pane();
+		
 		Label status = new Label("");
-		Label revealedSentence = new Label(randomSentence);
+		Label revealedSentence = new Label("The sentence was: " +randomSentence);
+		ImageView endingView = new ImageView();
+		
 		if (win == true) {
 			status.setText("You survived!");
+			endingView.setImage(happy);
 		}
 		else {
 			status.setText("You got hanged :(");
+			endingView.setImage(sad);
 		}
-		
-		over.getChildren().addAll(status, revealedSentence);
-		Scene gameOver = new Scene(over,500,500);
+		endingView.setFitWidth(280);
+		endingView.setPreserveRatio(true);
+		endingView.setX(550);
+		overContent.getChildren().addAll(status, revealedSentence);
+		overContent.setLayoutY(150);
+		overContent.setLayoutX(50);
+		over.getChildren().addAll(overContent,endingView);
+		Scene gameOver = new Scene(over, 800,400);
 		stage.setScene(gameOver);
 		stage.show();
 		
