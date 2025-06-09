@@ -13,6 +13,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -24,23 +29,27 @@ public class GUIDriver extends Application {
 	int guesses = 6;
 	boolean gameDone = false;
 	@Override
-	public void start(Stage stage) {
+	public void start(Stage stage) throws FileNotFoundException {
+		
+		
+		
 		VBox menu = new VBox(20);
 		menu.setAlignment(Pos.CENTER);
+
+		menu.setStyle("-fx-background-color: beige");
 		Label title = new Label("Hangman");
-		Label options = new Label("Pick your category:");
+		title.setStyle("-fx-font-family: 'Copperplate'; -fx-font-size: 40; -fx-padding: 4; -fx-text-fill: #A67B5B;");
+		Label options = new Label("Pick your category to save Bob!");
 		Button genZBtn = new Button("Gen Z Phrases");
 		Button movieBtn = new Button("Movie Quotes");
 		Button songBtn = new Button("Song Lyrics");
-		title.setStyle("-fx-font-size: 34; -fx-padding: 5;");
-		options.setStyle("-fx-font-size: 20; -fx-padding: 5;");
-		genZBtn.setStyle("-fx-font-size: 15; -fx-padding: 5;");
-		movieBtn.setStyle("-fx-font-size: 15; -fx-padding: 5;");
-		songBtn.setStyle("-fx-font-size: 15; -fx-padding: 5;");
-		
+		options.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #A67B5B; -fx-font-weight: bold;");
+		genZBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
+		movieBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
+		songBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
 		genZBtn.setOnAction(e -> {
 			try {
-				startGame(stage, "genZ_phrase.txt");
+				startGame(stage, "genZ_phrase.txt");  
 			} catch (Exception e1) {
 				System.out.println("There must be a file issue");
 				System.out.println(e1.getMessage());
@@ -69,6 +78,7 @@ public class GUIDriver extends Application {
 		Scene startScene = new Scene(menu, 800, 400);
 		stage.setScene(startScene);
 		stage.show();
+		menu.requestFocus(); 
 	}
 	public void startGame(Stage stage, String filename) throws Exception {
 		
@@ -93,15 +103,15 @@ public class GUIDriver extends Application {
 			System.out.println(e.getMessage());
 		}
 		
-		
+
 		
 		//randomly select sentence
-		
 		String randomSentence = sentences.get(rand.nextInt(sentences.size())).toLowerCase();
 		System.out.println(randomSentence);
 		
 		VBox gameContent = new VBox(10);
 		gameContent.setAlignment(Pos.CENTER_LEFT);
+
 		Label triesLeft = new Label("You have "+(guesses)+" tries left.");
 		
 		Button[] letterBtns = new Button[26];
@@ -160,7 +170,6 @@ public class GUIDriver extends Application {
 		    }
 		}
 		
-	
 		Letter[] letters = new Letter[26];
 		
 		for (int i=0; i < letters.length;i++) {
@@ -181,6 +190,7 @@ public class GUIDriver extends Application {
 		for (int i =0; i < letterBtns.length;i++) {
 			Button letter = new Button(alphabet[i]);
 			letterBtns[i] = letter; 
+			letter.setFocusTraversable(false);
 			if (i < 13) {
 				row1.getChildren().add(letter);
 			}
@@ -239,11 +249,13 @@ public class GUIDriver extends Application {
 			});
 		}
 		Pane layout = new Pane();
+		layout.setStyle("-fx-background-color: beige");
 		gameContent.getChildren().addAll(triesLeft, wordBox1, wordBox2, row1, row2);
 		gameContent.setLayoutY(100);
 		layout.getChildren().addAll(gameContent,hangmanView);
 		Scene scene1 = new Scene (layout, 800, 400);
 		stage.setScene(scene1);
+		gameContent.requestFocus();
 	
 		stage.show();
 	}
@@ -277,6 +289,7 @@ public class GUIDriver extends Application {
 		Scene gameOver = new Scene(over, 800,400);
 		stage.setScene(gameOver);
 		stage.show();
+		
 		
 	}
 
