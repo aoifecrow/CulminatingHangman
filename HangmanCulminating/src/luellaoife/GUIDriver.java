@@ -113,6 +113,7 @@ public class GUIDriver extends Application {
 		gameContent.setAlignment(Pos.CENTER_LEFT);
 
 		Label triesLeft = new Label("You have "+(guesses)+" tries left.");
+		triesLeft.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14; -fx-padding: 5; -fx-text-fill: #A67B5B; -fx-font-weight: bold;");
 		
 		Button[] letterBtns = new Button[26];
 		String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
@@ -250,7 +251,12 @@ public class GUIDriver extends Application {
 		}
 		Pane layout = new Pane();
 		layout.setStyle("-fx-background-color: beige");
-		gameContent.getChildren().addAll(triesLeft, wordBox1, wordBox2, row1, row2);
+		
+		VBox letterCenter = new VBox(10);
+		letterCenter.setAlignment(Pos.CENTER); 
+		letterCenter.getChildren().addAll( row1, row2, triesLeft);
+		gameContent.getChildren().addAll(wordBox1, wordBox2, letterCenter);
+		
 		gameContent.setLayoutY(100);
 		layout.getChildren().addAll(gameContent,hangmanView);
 		Scene scene1 = new Scene (layout, 800, 400);
@@ -277,18 +283,22 @@ public class GUIDriver extends Application {
 		}
 		else {
 			status.setText("You got hanged :(");
+			status.setStyle("-fx-font-family: 'Impact'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #911111;");
 			endingView.setImage(sad);
+			revealedSentence.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #911111; -fx-font-weight: bold;");
 		}
 		endingView.setFitWidth(280);
 		endingView.setPreserveRatio(true);
 		endingView.setX(550);
 		overContent.getChildren().addAll(status, revealedSentence);
-		overContent.setLayoutY(150);
-		overContent.setLayoutX(50);
+		overContent.setLayoutY(170);
+		overContent.setLayoutX(150);
 		over.getChildren().addAll(overContent,endingView);
 		Scene gameOver = new Scene(over, 800,400);
 		stage.setScene(gameOver);
 		stage.show();
+		overContent.setAlignment(Pos.CENTER);
+
 		
 		
 	}
