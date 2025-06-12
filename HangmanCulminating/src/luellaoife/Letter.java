@@ -44,6 +44,13 @@ public class Letter {
 	public void guess() {
 		guessed = true;
 	}
-		
+	
+	/**
+	 * Create a string representation of the object Letter
+	 */
+	@Override
+	public String toString() {
+		return ("The letter is: "+letter);
+	}
 
 }

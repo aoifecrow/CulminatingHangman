@@ -1,14 +1,33 @@
 package luellaoife;
 
+/**
+ * Class to represent a single word
+ * @version 1.0
+ */
 public class Word {
 	private String word;
 	
+	/**
+	 * Constructor for Word
+	 */
 	public Word(String w) {
 		word = w;
 	}
+	
+	/**
+	 * Checks in word contains letter
+	 * @param letter a letter in the english alphabet
+	 * @return if letter is in the word
+	 */
 	public boolean containsLetter(String letter) {
 		return word.contains(letter);
 	}
+	
+	/**
+	 * Returns letter locations as a key
+	 * @param letter a letter in the english alphabet
+	 * @return a string that is a code for the letter and its locations in the word
+	 */
 	public String letterLocations(String letter) {
 		String locations = letter;
 		if (containsLetter(letter)) {
@@ -21,6 +40,11 @@ public class Word {
 		}
 		return locations +"-1";
 	}
+	/**
+	 * Finds and returns the indices of letter in word
+	 * @param letter a letter in the english alphabet
+	 * @return an array of the locations of letter in the word
+	 */
 	public int[] getLetterIndices(String letter) {
 		String numbers = letterLocations(letter).substring(1);
 		int[] index = new int[numbers.length()];
@@ -29,7 +53,19 @@ public class Word {
 		}
 		return index;
 	}
+	
+	/**
+	 * Shows word
+	 * @return word 
+	 */
 	public String getWord() {
 		return word;
+	}
+	/**
+	 * Create a string representation of the object Word
+	 */
+	@Override
+	public String toString() {
+		return ("The word is: "+word);
 	}
 }
