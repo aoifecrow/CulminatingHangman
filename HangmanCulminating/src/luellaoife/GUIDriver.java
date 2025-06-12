@@ -37,8 +37,8 @@ import java.io.FileInputStream;
  */
 public class GUIDriver extends Application {
 
-	int guesses = 6; //total guesses for regular hangman modes
-	int evilGuesses =8; //total guesses for evil hangman mode
+	private int guesses = 6; //total guesses for regular hangman modes
+	private int evilGuesses =8; //total guesses for evil hangman mode
 	
 	@Override
 	public void start(Stage stage) throws FileNotFoundException {
