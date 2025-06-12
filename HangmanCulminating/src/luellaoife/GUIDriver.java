@@ -395,7 +395,7 @@ public class GUIDriver extends Application {
 		
 		// Read file and load sentences
 		try {
-			File f = new File("words2.txt");
+			File f = new File("words2.txt"); //use file "words.txt" for impossible mode
 			Scanner in = new Scanner(f);
 			while (in.hasNextLine()) {
 				Word word = new Word(in.nextLine());
