@@ -496,7 +496,7 @@ public class GUIDriver extends Application {
 					
 					//organizes words into groups based on positon of selected letter
 					for (int j=0; j<temporaryWords.size(); j++) {
-						String key = temporaryWords.get(j).letterLocations(letterBtns[index].getText()); //gets key
+						String key = temporaryWords.get(j).getLetterKey(letterBtns[index].getText()); //gets key
 						keySave = key; //saves a possible key
 						
 						//if key already exists adds to that keys array

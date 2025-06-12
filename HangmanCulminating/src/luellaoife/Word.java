@@ -28,7 +28,7 @@ public class Word {
 	 * @param letter a letter in the english alphabet
 	 * @return a string that is a code for the letter and its locations in the word
 	 */
-	public String letterLocations(String letter) {
+	public String getLetterKey(String letter) {
 		String locations = letter;
 		if (containsLetter(letter)) {
 			for (int i=0;i< word.length(); i++) {
@@ -46,7 +46,7 @@ public class Word {
 	 * @return an array of the locations of letter in the word
 	 */
 	public int[] getLetterIndices(String letter) {
-		String numbers = letterLocations(letter).substring(1);
+		String numbers = getLetterKey(letter).substring(1);
 		int[] index = new int[numbers.length()];
 		for (int i=0; i<index.length; i++ ) {
 			index[i] = Integer.valueOf(String.valueOf(numbers.charAt(i)));
