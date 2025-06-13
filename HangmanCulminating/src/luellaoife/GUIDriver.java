@@ -183,7 +183,6 @@ public class GUIDriver extends Application {
 
 		// Randomly select sentence
 		String randomSentence = sentences.get(rand.nextInt(sentences.size())).toLowerCase();
-		System.out.println(randomSentence);
 
 		// Declare variables
 		Button[] letterBtns = new Button[26];
@@ -215,11 +214,8 @@ public class GUIDriver extends Application {
 		wordBox2.setPadding(new Insets(0, 0, 0, 100));
 		row1.setPadding(new Insets(0, 0, 0, 50));
 		row2.setPadding(new Insets(0, 0, 0, 50));
-		triesLeft.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14; -fx-padding: 5; -fx-text-fill: #A000000; -fx-font-weight: bold;");
-		triesLeft.setFill(Color.WHITE); // Inner color
-		triesLeft.setStroke(Color.BLACK); // Outline
-		triesLeft.setStrokeWidth(1); // Thickness of outline
-		triesLeft.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
+		triesLeft.setFill(Color.BLACK); // Inner color
+		triesLeft.setStyle("-fx-font-family: 'Times New Roman';-fx-font-size: 18; -fx-font-weight: bold;");
 		
 		
 		// Create and load images
@@ -412,12 +408,16 @@ public class GUIDriver extends Application {
 				String[] alphabet = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
 				                      "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
 				Letter[] letters = new Letter[26];
-				Text triesLeft = new Text("You have " + guesses + " tries left.");
+				Text triesLeft = new Text("You have " + evilGuesses + " tries left.");
 				VBox gameContent = new VBox(10);
 				VBox letterCenter = new VBox(10);
 				HBox wordBox1 = new HBox(8);
 				HBox row1 = new HBox(4);
 				HBox row2 = new HBox(4);
+				Text instructions = new Text("Instructions:\n"
+						+ "In Evil Hangman, the computer doesn’t choose one word at the start.\n"
+						+ "Instead, after each guess, it changes the possible word to make it harder for you!\n"
+						+ "If you lose, you’ll find out that no word was ever actually selected.");
 				// Create Letter objects
 				for (int i = 0; i < letters.length; i++) {
 					Letter letter = new Letter(alphabet[i].charAt(0));
@@ -432,12 +432,10 @@ public class GUIDriver extends Application {
 				wordBox1.setPadding(new Insets(0, 0, 0, 250));
 				row1.setPadding(new Insets(0, 0, 0, 50));
 				row2.setPadding(new Insets(0, 0, 0, 50));
-				triesLeft.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14; -fx-padding: 5; -fx-text-fill: #A000000; -fx-font-weight: bold;");
-				triesLeft.setFill(Color.WHITE); // Inner color
-				triesLeft.setStroke(Color.BLACK); // Outline
-				triesLeft.setStrokeWidth(1); // Thickness of outline
-				triesLeft.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
-				
+				triesLeft.setFill(Color.BLACK); // Inner color
+				triesLeft.setStyle("-fx-font-family: 'Times New Roman';-fx-font-size: 18; -fx-font-weight: bold;");
+				instructions.setFill(Color.BLACK); // Inner color
+				instructions.setStyle("-fx-font-family: 'Times New Roman';-fx-font-size: 15; -fx-font-weight: bold;");
 				
 				// Create and load images
 				Image leg2 = new Image(new FileInputStream("src/images/leg2.png"));
@@ -593,7 +591,7 @@ public class GUIDriver extends Application {
 		
 		//align the letters and guess statement to center
 		letterCenter.setAlignment(Pos.CENTER); 
-		letterCenter.getChildren().addAll( row1, row2, triesLeft);
+		letterCenter.getChildren().addAll( row1, row2, triesLeft,instructions);
 		
 		//combines unrevealed word and letterCenter
 		gameContent.getChildren().addAll(wordBox1, letterCenter);
@@ -629,6 +627,11 @@ public class GUIDriver extends Application {
 		Label revealedSentence = new Label("The sentence was: " + randomSentence);
 		ImageView endingView = new ImageView();
 
+		if (randomSentence.equals("never created")) {
+			revealedSentence.setText("You lost! In Evil Hangman, there was no word.\n"
+					+ " The game kept changing it to make it harder!");
+		}
+		
 		// Set status and image depending on win or loss
 		if (win) {
 			BackgroundImage background = new BackgroundImage(
@@ -640,7 +643,7 @@ public class GUIDriver extends Application {
 		    	);
 
 				over.setBackground(new Background(background));
-				revealedSentence.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #630c09; -fx-font-weight: bold;");
+				revealedSentence.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #460907; -fx-font-weight: bold;");
 				
 		} else {
 		    BackgroundImage background = new BackgroundImage(
@@ -653,7 +656,7 @@ public class GUIDriver extends Application {
 
 				over.setBackground(new Background(background));
 				
-		    revealedSentence.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #630c09; -fx-font-weight: bold;");
+		    revealedSentence.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #460907; -fx-font-weight: bold;");
 		}
 
 		// Configure ImageView properties
