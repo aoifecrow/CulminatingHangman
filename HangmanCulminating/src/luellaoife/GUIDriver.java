@@ -448,7 +448,7 @@ public class GUIDriver extends Application {
 				Image body = new Image(new FileInputStream("src/images/body.png"));
 				Image head = new Image(new FileInputStream("src/images/head.png"));
 				Image nothing = new Image(new FileInputStream("src/images/nothing.png"));
-				Image hat = new Image(new FileInputStream("src/images/hat.png"));
+				Image hat = new Image(new FileInputStream("src/images/hathang.png"));
 				Image[] hangmanImages = { nothing, head, body, arm1, arm2, leg1, leg2, hat,hat };
 				ImageView hangmanView = new ImageView(nothing);
 				hangmanView.setFitWidth(280);
