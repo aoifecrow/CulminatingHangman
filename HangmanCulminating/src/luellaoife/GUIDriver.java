@@ -70,7 +70,7 @@ public class GUIDriver extends Application {
 		options.setFill(Color.WHEAT); // Inner color
 		options.setStroke(Color.web("#602c04")); // Outline
 		options.setStrokeWidth(1); // Thickness of outline
-		options.setFont(Font.font("Copperplate", FontWeight.BOLD, 38));
+		options.setFont(Font.font("Copperplate", FontWeight.BOLD, 25));
 		
 		
 		Button genZBtn = new Button("Gen Z Phrases");
@@ -80,12 +80,11 @@ public class GUIDriver extends Application {
 		Button evilBtn = new Button("Evil Hangman");
 		
 		//set styling for buttons
-		options.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 20; -fx-padding: 5; -fx-text-fill: #000000; -fx-font-weight: bold;");
-		genZBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
-		movieBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
-		songBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
-		boomerBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;");
-		evilBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #B22222; -fx-text-fill: white;");
+		genZBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #528c4e; -fx-text-fill: #a0eaa3;  -fx-font-weight: bold;");
+		movieBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #528c4e; -fx-text-fill: #a0eaa3; -fx-font-weight: bold;");
+		songBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #528c4e; -fx-text-fill: #a0eaa3; -fx-font-weight: bold;");
+		boomerBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #528c4e; -fx-text-fill: #a0eaa3; -fx-font-weight: bold;");
+		evilBtn.setStyle("-fx-font-size: 15; -fx-padding: 5; -fx-background-color: #B22222; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 		
 		//set up buttons and call their respective game methods
 		genZBtn.setOnAction(e -> {
